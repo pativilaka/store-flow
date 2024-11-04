@@ -26,12 +26,6 @@ public class ProductController {
         return ResponseEntity.ok(productDto);
     }
 
-//    @GetMapping
-//    public List<ProductDTO> findAll(){
-//        List<ProductDTO> listDTO = service.findAll();
-//        return listDTO;
-//    }
-
     @GetMapping
     public ResponseEntity<Page<ProductMinDTO>> findAllPage(
             @RequestParam(name = "name", defaultValue = "") String name,
@@ -39,7 +33,6 @@ public class ProductController {
         Page<ProductMinDTO> allPage = service.findAllPage(name, pageable);
         return ResponseEntity.ok(allPage);
     }
-
 
     @PostMapping
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
@@ -49,19 +42,16 @@ public class ProductController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto){
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
 
-
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }

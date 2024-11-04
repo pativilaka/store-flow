@@ -28,9 +28,6 @@ public class ProductDTO {
     @NotEmpty(message = "Deve ter ao menos 01 categoria")
     private List<CategoryDTO> categories = new ArrayList<>();
 
-    public ProductDTO() {
-    }
-
     public ProductDTO(Long id, String name, String description, Double price, String imgURL) {
         this.id = id;
         this.name = name;
