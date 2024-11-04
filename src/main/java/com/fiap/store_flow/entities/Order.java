@@ -4,7 +4,10 @@ import com.fiap.store_flow.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -21,11 +24,21 @@ public class Order {
     @JoinColumn(name = "client_id")
     private User client;
 
-    public Order(Long id, Instant moment, OrderStatus status, User client) {
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
+
+    public Order() {
+    }
+
+    public Order(Long id, Instant moment, OrderStatus status, User client, Payment payment) {
         Id = id;
         this.moment = moment;
         this.status = status;
         this.client = client;
+        this.payment = payment;
     }
 
     public Long getId() {
@@ -60,16 +73,32 @@ public class Order {
         this.client = client;
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
+    public List<Product> getProducts(){
+        return items.stream().map(x-> x.getProduct()).toList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(Id, order.Id) && Objects.equals(moment, order.moment) && status == order.status && Objects.equals(client, order.client);
+        return Objects.equals(Id, order.Id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, moment, status, client);
+        return Objects.hash(Id);
     }
 }

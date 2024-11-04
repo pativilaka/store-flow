@@ -17,6 +17,7 @@ public class User {
     private Long id;
     private String name;
     @Embedded
+    @Column(unique = true)
     private Email email;
     private String phone;
     private LocalDate birthDate;
@@ -24,6 +25,9 @@ public class User {
 
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
+
+    public User() {
+    }
 
     public User(Long id, String name, Email email, String phone, LocalDate birthDate, String password) {
         this.id = id;
@@ -92,10 +96,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, phone, birthDate, password);
-    }
-
-    public List<Order> getOrders() {
-        return orders;
+        return Objects.hash(id);
     }
 }

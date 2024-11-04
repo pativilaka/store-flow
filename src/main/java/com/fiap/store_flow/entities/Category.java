@@ -1,6 +1,5 @@
-package com.fiap.store_flow.entities.value_objects;
+package com.fiap.store_flow.entities;
 
-import com.fiap.store_flow.entities.Product;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -18,6 +17,9 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
+
+    public Category() {
+    }
 
     public Category(Long id, String name) {
         this.id = id;
@@ -49,11 +51,11 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return Objects.equals(id, category.id) && Objects.equals(name, category.name) && Objects.equals(products, category.products);
+        return Objects.equals(id, category.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, products);
+        return Objects.hash(id);
     }
 }
