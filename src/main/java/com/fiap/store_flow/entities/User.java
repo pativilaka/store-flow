@@ -1,8 +1,11 @@
 package com.fiap.store_flow.entities;
 
+import com.fiap.store_flow.entities.value_objects.Email;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,12 +16,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String email;
+    @Embedded
+    private Email email;
     private String phone;
     private LocalDate birthDate;
     private String password;
 
-    public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
+
+    public User(Long id, String name, Email email, String phone, LocalDate birthDate, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -43,11 +50,11 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(Email email) {
         this.email = email;
     }
 
@@ -86,5 +93,9 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, email, phone, birthDate, password);
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 }
